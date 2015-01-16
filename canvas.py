@@ -16,14 +16,19 @@ class Canvas(pygame.sprite.Sprite):
         r=len(self.current.shape)       #current tet's rows
         c=len(self.current.shape[0])    #current tet's cols
         self.s=[0,nCOL/2-c/2]           #the start of the tetra
-        #for i in range(r):
-        #    s=nCOL/2-c/2
-        #    for j in self.current.shape[i]:
-        #        if j==1:
-        #            self.grid[i][s]=self.current.number
-        #            s+=1
+        #
     def drop(self):
         """drop current tet"""
+        if self.current.check_bot(self.grid, self.s):
+            self.s[0]+=1
+        else:
+            for i in range(len(self.current.shape)):
+                s=nCOL/2-len(self.current.shape[0])/2
+                for j in self.current.shape[i]:
+                    if j==1:
+                        self.grid[i][s]=self.current.number
+                        s+=1
+            self.nexttet()
         if self.s[0]+len(self.current.shape)<nROW:
             self.s[0]+=1
         self.add()
