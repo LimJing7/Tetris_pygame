@@ -1,0 +1,88 @@
+import os, pygame
+from pygame.locals import *
+from pygame.compat import geterror
+import tetromino
+import canvas
+
+HUD_COLOR=(185,185,185)
+HUD_SIDE=50
+HUD_BOTTOM=40
+HEIGHT=660+HUD_BOTTOM
+WIDTH=300+2*HUD_SIDE
+  
+def main():
+    
+    pygame.init()
+    screen = pygame.display.set_mode((WIDTH,HEIGHT))
+    pygame.display.set_caption('Tetris')
+    pygame.mouse.set_visible(0)
+    
+    background = pygame.Surface(screen.get_size())
+    background = background.convert()
+    background.fill((0, 0, 0))
+    
+    #draw HUD
+    pygame.draw.rect(background, HUD_COLOR , [0,0,HUD_SIDE,HEIGHT])
+    pygame.draw.rect(background, HUD_COLOR , [WIDTH-HUD_SIDE,0,HUD_SIDE,HEIGHT])
+    pygame.draw.rect(background, HUD_COLOR , [0,HEIGHT-HUD_BOTTOM,WIDTH,HUD_BOTTOM])
+    
+    clock = pygame.time.Clock()
+    tetro=tetromino.Tetromino()
+    pygame.sprite.RenderPlain((tetro))
+    
+    #draw canvas
+    can=canvas.Canvas()
+    can.nexttet()
+    global changes
+    changes =[]
+    def drawcan():
+        global changes
+        for change in changes:
+            background.fill((0,0,0),change)
+        changes=[]
+        for row in range(len(can.current.shape)):
+            for col in range(len(can.current.shape[row])):
+                if can.current.shape[row][col]!=0:
+                    change=[(can.s[1]+col)*30+HUD_SIDE,(can.s[0]+row)*30,30,30]
+                    pygame.draw.rect(background, (255,0,0), change)
+                    changes.append(change)
+                
+    
+    
+    going = True
+    
+    ck=0
+    
+    while going:
+        clock.tick(60)
+        ck+=1
+
+        #Handle Input Events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                going = False
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    going = False
+                elif event.key == K_RIGHT:
+                    can.move_right()
+                elif event.key == K_LEFT:
+                    can.move_left()
+                elif event.key == K_UP:
+                    can.current.rotate_clock()
+           
+        if ck%20==0:
+            can.drop()   
+        
+        #allsprites.update()
+
+        #Draw Everything
+        screen.blit(background, (0, 0))
+        drawcan()
+        #allsprites.draw(screen)
+        pygame.display.flip()
+
+    pygame.quit()
+    
+if __name__=="__main__":
+    main()
