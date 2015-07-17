@@ -37,13 +37,13 @@ def main():
         for i in range(len(can.current.shape)):
             for j in range(len(can.current.shape[i])):
                 if can.current.shape[i][j]==1:
-                    pygame.draw.rect(background, (255,0,0), [(j+can.s[1])*30+HUD_SIDE,(i+can.s[0])*30,30,30])
+                    pygame.draw.rect(background, can.current.color, [(j+can.s[1])*30+HUD_SIDE,(i+can.s[0])*30,30,30])
                     
     def drawgrid():
         for i in range(len(can.grid)):
             for j in range(len(can.grid[i])):
                 if can.grid[i][j]!=0:
-                    pygame.draw.rect(background, (255,0,0), [j*30+HUD_SIDE,i*30,30,30])
+                    pygame.draw.rect(background, can.colors[can.grid[i][j]], [j*30+HUD_SIDE,i*30,30,30])
                 else:
                     pygame.draw.rect(background, (0,0,0), [j*30+HUD_SIDE,i*30,30,30])
                 
@@ -70,7 +70,9 @@ def main():
                 elif event.key == K_LEFT:
                     can.move_left()
                 elif event.key == K_UP:
-                    can.current.rotate_clock()
+                    can.current.rotate_clock(can.grid, can.s)
+                elif event.key == K_SPACE:
+                    can.drop_cur()
         
         if (ck+1)%20==0:
             to_drop = True
