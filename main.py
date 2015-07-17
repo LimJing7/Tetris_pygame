@@ -58,6 +58,7 @@ def main():
     
     ck=0
     to_drop = False
+    end = False
     
     while going:
         clock.tick(60)
@@ -95,9 +96,19 @@ def main():
         drawgrid()
         drawcur()
         drawScore()
+        if can.lose():
+            going = False
         #allsprites.draw(screen)
         pygame.display.flip()
-
+    
+    while not end:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                end = True
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    end = True
+    
     pygame.quit()
     
 if __name__=="__main__":

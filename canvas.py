@@ -59,4 +59,7 @@ class Canvas(pygame.sprite.Sprite):
         self.grid.pop(linenumber)
         self.grid = [[0 for i in range(nCOL)]] + self.grid
     
-        
+    def lose(self):
+        """check for game over condition"""
+        if self.grid[0].count(0)!=nCOL:
+            return True
