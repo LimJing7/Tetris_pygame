@@ -47,7 +47,12 @@ def main():
                 else:
                     pygame.draw.rect(background, (0,0,0), [j*30+HUD_SIDE,i*30,30,30])
                 
-    
+    def drawScore():
+        if pygame.font:
+            font = pygame.font.Font(None, 36)
+            text = font.render(str(can.score), 1, (255, 255, 255))
+            textpos = text.get_rect(centerx=background.get_width()/2)
+            background.blit(text, textpos)
     
     going = True
     
@@ -89,6 +94,7 @@ def main():
         screen.blit(background, (0, 0))
         drawgrid()
         drawcur()
+        drawScore()
         #allsprites.draw(screen)
         pygame.display.flip()
 

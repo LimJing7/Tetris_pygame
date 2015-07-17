@@ -11,6 +11,8 @@ class Canvas(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.grid=[[0 for i in range(nCOL)] for j in range(nROW)]
         self.colors=[(0,0,0)]
+        self.rCleared = 0
+        self.score = 0
     def nexttet(self):
         """ call the next tetromino"""
         self.current=tetromino.Tetromino()
@@ -50,6 +52,8 @@ class Canvas(pygame.sprite.Sprite):
         for row in range(len(self.grid)):
             if self.grid[row].count(0)==0:
                 self.clear(row)
+                self.rCleared+=1
+                self.score += self.rCleared
     def clear(self, linenumber):
         """clear a particular row"""
         self.grid.pop(linenumber)
