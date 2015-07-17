@@ -33,27 +33,19 @@ def main():
     #draw canvas
     can=canvas.Canvas()
     can.nexttet()
-    global changes
-    changes =[]
-    def drawcan():
-        global changes
-        for change in changes:
-            background.fill((0,0,0),change)
-        changes=[]
-        for row in range(len(can.current.shape)):
-            for col in range(len(can.current.shape[row])):
-                if can.current.shape[row][col]!=0:
-                    change=[(can.s[1]+col)*30+HUD_SIDE,(can.s[0]+row)*30,30,30]
-                    pygame.draw.rect(background, (255,0,0), change)
-                    changes.append(change)
+    def drawcur():
+        for i in range(len(can.current.shape)):
+            for j in range(len(can.current.shape[i])):
+                if can.current.shape[i][j]==1:
+                    pygame.draw.rect(background, (255,0,0), [(j+can.s[1])*30+HUD_SIDE,(i+can.s[0])*30,30,30])
                     
     def drawgrid():
         for i in range(len(can.grid)):
             for j in range(len(can.grid[i])):
                 if can.grid[i][j]!=0:
                     pygame.draw.rect(background, (255,0,0), [j*30+HUD_SIDE,i*30,30,30])
-                # else:
-                    # pygame.draw.rect(background, (0,0,0), [j*30+HUD_SIDE,i*30,30,30])
+                else:
+                    pygame.draw.rect(background, (0,0,0), [j*30+HUD_SIDE,i*30,30,30])
                 
     
     
@@ -86,14 +78,15 @@ def main():
         if ck%20==0:
             if to_drop:
                 can.drop()
+                can.checkclear()
                 to_drop=False
         
         #allsprites.update()
 
         #Draw Everything
         screen.blit(background, (0, 0))
-        drawcan()
         drawgrid()
+        drawcur()
         #allsprites.draw(screen)
         pygame.display.flip()
 

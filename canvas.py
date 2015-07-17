@@ -44,13 +44,14 @@ class Canvas(pygame.sprite.Sprite):
             # print row
     def checkclear(self):
         """check for filled rows"""
-        for row in range(self.grid):
+        for row in range(len(self.grid)):
             if self.grid[row].count(0)==0:
                 self.clear(row)
-        self.drop_rows()
     def clear(self, linenumber):
         """clear a particular row"""
-        self.grid[linenumber]=[0 for i in range(nCOL)]
+        self.grid.pop(linenumber)
+        self.grid = [[0 for i in range(nCOL)]] + self.grid
+        print self.grid
     def drop_rows(self):
         """drop rows above filled rows"""
         pass
