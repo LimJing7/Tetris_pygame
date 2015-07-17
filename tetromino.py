@@ -34,10 +34,27 @@ class Tetromino(pygame.sprite.Sprite):
     def rotate_anti(self):
         self.shape=(zip(*self.shape)[::-1])
     def check_bot(self, can_grid, start):
-        i,j=*start
+        """
+        returns true if tetromino has not hit anything
+        """
+        i,j=start
         for row in range(len(self.shape)):
             for col in range(len(self.shape[row])):
-                #can_grid[i,j]
+                if self.shape[row][col]==1:
+                    try:
+                        if self.shape[row+1][col] == 0:
+                            try:
+                                if can_grid[i+row+1][j+col]!=0:
+                                    return False
+                            except IndexError:
+                                return False
+                    except IndexError:
+                        try:
+                            if can_grid[i+row+1][j+col]!=0:
+                                return False
+                        except IndexError:
+                            return False
+        return True
     def __str__(self):
         return self.shape_name
 	

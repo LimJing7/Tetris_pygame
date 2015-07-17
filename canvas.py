@@ -22,16 +22,10 @@ class Canvas(pygame.sprite.Sprite):
         if self.current.check_bot(self.grid, self.s):
             self.s[0]+=1
         else:
-            for i in range(len(self.current.shape)):
-                s=nCOL/2-len(self.current.shape[0])/2
-                for j in self.current.shape[i]:
-                    if j==1:
-                        self.grid[i][s]=self.current.number
-                        s+=1
+            self.add()
             self.nexttet()
         if self.s[0]+len(self.current.shape)<nROW:
             self.s[0]+=1
-        self.add()
     def move_left(self):
         """move current left"""
         if self.s[1]>0:
@@ -42,7 +36,12 @@ class Canvas(pygame.sprite.Sprite):
             self.s[1]+=1
     def add(self):
         """add current to the grid"""
-        pass
+        for i in range(len(self.current.shape)):
+            for j in range(len(self.current.shape[i])):
+                if self.current.shape[i][j]==1:
+                    self.grid[self.s[0]+i][self.s[1]+j]=self.current.number
+        # for row in self.grid:
+            # print row
     def checkclear(self):
         """check for filled rows"""
         for row in range(self.grid):

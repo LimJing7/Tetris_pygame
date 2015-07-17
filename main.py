@@ -46,12 +46,21 @@ def main():
                     change=[(can.s[1]+col)*30+HUD_SIDE,(can.s[0]+row)*30,30,30]
                     pygame.draw.rect(background, (255,0,0), change)
                     changes.append(change)
+                    
+    def drawgrid():
+        for i in range(len(can.grid)):
+            for j in range(len(can.grid[i])):
+                if can.grid[i][j]!=0:
+                    pygame.draw.rect(background, (255,0,0), [j*30+HUD_SIDE,i*30,30,30])
+                # else:
+                    # pygame.draw.rect(background, (0,0,0), [j*30+HUD_SIDE,i*30,30,30])
                 
     
     
     going = True
     
     ck=0
+    to_drop = False
     
     while going:
         clock.tick(60)
@@ -70,15 +79,21 @@ def main():
                     can.move_left()
                 elif event.key == K_UP:
                     can.current.rotate_clock()
-           
+        
+        if (ck+1)%20==0:
+            to_drop = True
+        
         if ck%20==0:
-            can.drop()   
+            if to_drop:
+                can.drop()
+                to_drop=False
         
         #allsprites.update()
 
         #Draw Everything
         screen.blit(background, (0, 0))
         drawcan()
+        drawgrid()
         #allsprites.draw(screen)
         pygame.display.flip()
 
